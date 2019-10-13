@@ -1,0 +1,23 @@
+{% extends "base.html"%}
+
+{% block maincontent %}
+	<div class="col-md-8 col-md-offset-3">
+		{% if errors %}
+		<div class="errors" class="col-md-12" style="color:red;">
+		{{errors}}
+		</div>
+		{% endif  %}
+		<form method="post", action=".">
+			{% csrf_token %}
+		{% for field in user_profile_form %}
+			<div class="form-group">
+			<label>{{field.label}}</label>
+			{{field}}
+			</div>
+		{% endfor%}
+		<input type="hidden" name="user_id" value="{{ user.id }}">
+		<button class="primary btn-info">Submit</button>
+	     </form>
+     </div>
+
+	{% endblock %}

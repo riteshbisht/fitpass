@@ -1,0 +1,22 @@
+{% extends "base.html"%}
+
+{% block maincontent %}
+	<div class="col-md-8 col-md-offset-3">
+		{% if errors %}
+		<div class="errors" class="col-md-12" style="color:red;">
+		{{errors}}
+		</div>
+		{% endif  %}
+		<form method="post", action=".">
+			{% csrf_token %}
+		{% for field in login_form %}
+			<div class="form-group">
+			<label>{{field.label}}</label>
+			{{field}}
+			</div>
+		{% endfor%}
+		<button class="primary btn-info">Submit</button>
+	     </form>
+     </div>
+
+	{% endblock %}

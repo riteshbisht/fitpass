@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+
+{% block maincontent %}
+
+<h3>Users Data :-</h3>
+
+	<table class="table table-stripped">
+		<thead>
+			<th>Name</th>
+			<th>Email</th>
+			<th>Gender</th>
+			<th>Marital Status</th>
+			<th>Roles</th>
+			<th>Active</th>
+			<th>Edit Profile</th>
+		</thead>
+		<tbody>
+			{% for usr in users %}
+			<tr>
+				<td>{{ usr.first_name }} {{ usr.last_name }}</td>
+				<td>{{ usr.email }}</td>
+				<td>{{ usr.user_profile.get_gender_display }}</td>
+				<td>{{ usr.user_profile.get_marital_status_display }}</td>
+				<td>
+					{% for rol in usr.roles.all %}
+						{{ rol.role.role_name }}
+					{% endfor %}
+				</td>
+				<td>
+					{% if usr.is_active%}
+					<p>Active</p>
+					{% else %}
+					<p> Inactive</p>
+					{% endif %}
+					<input type="checkbox" class="active" data-id={{usr.id}} {% if usr.is_active%} checked {% endif %}>
+				</td>
+				<td><button><a href="user/{{user.id}}/edit-profile/">Edit Profile</a></button></td>
+		    </tr>
+			{% endfor %}
+		</tbody>
+
+	</table>	
+
+
+	{% endblock %}
+
+	{% block js_section %}
+	<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+
+<script>
+	$(".active").change(function(){
+		user_id = $(this).attr('data-id')
+		val = $(this).is(':checked')
+		data = {
+			'is_active': val
+		}
+		let url = '/api/v1/user/' + user_id + '/active'
+		$.ajax({
+			url: url,
+			method: 'PUT',
+			data: data,
+			success: function(data){
+				window.location.reload()
+			}
+		})
+
+	})
+</script>
+{% endblock %}

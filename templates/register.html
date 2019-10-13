@@ -1,0 +1,43 @@
+{% extends "base.html"%}
+
+{% block css%}
+	{{block.super}}
+<style>
+#form-conatiner {
+	border: 18px solid #14abce;
+	border-radius: 12px;
+}
+.heading {
+	margin: 10px;
+}
+</style>
+{% endblock %}
+{% block maincontent %}
+	<div class="row">
+		<div class="col-md-4 offset-md-4">
+			<div class="col-md-12" id="form-conatiner" >
+				<h3 class="text-center heading">Register</h3>
+
+				<form method="post", action=".">
+					{% csrf_token %}
+				{% for field in register_form %}
+					<div class="form-group">
+					<label>{{field.label}}</label>
+					{{field}}
+					{% if field.errors %}
+                      <p class="text-danger">
+                          {% for error in  field.errors %}{{ error }}{% endfor %}
+                      </p>
+	              	{% endif %}
+					</div>
+
+				{% endfor%}
+				<div class="form-group text-center">
+					<button class="btn btn-info">Submit</button>
+				</div>
+			     </form>
+		    </div>
+	 	</div>
+ 	</div>
+
+	{% endblock %}
